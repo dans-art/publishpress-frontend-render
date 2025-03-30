@@ -1,0 +1,71 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-create-block-publishpress-frontend-render
+{
+	details
+	{
+		margin-bottom: 2rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid gray;
+
+		summary
+		{
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+	
+			&::before
+			{
+				content: '+';
+				font-size: 3rem;
+				width: 10%;
+				max-width: 2rem;
+			}
+	
+			>div
+			{
+				width: 90%;
+				align-self: center;
+				cursor: pointer;
+			}
+		}
+
+		&[open] summary{
+			&::before
+			{
+				content: '-';
+			}
+		}
+	}
+
+
+
+	.post-tags-cats
+	{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		width: 100%;
+
+		>div
+		{
+			display: flex;
+			flex-direction: row;
+		}
+
+		.cat-urgent
+		{
+			border: 1px solid rgb(141, 1, 1);
+			background-color: rgb(110, 6, 6);
+			padding: 0.5rem;
+			color: white;
+			border-radius: 15%;
+		}
+	}
+}

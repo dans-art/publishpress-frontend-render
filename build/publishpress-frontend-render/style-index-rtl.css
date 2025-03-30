@@ -1,0 +1,51 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/publishpress-frontend-render/style.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-block-create-block-publishpress-frontend-render details {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid gray;
+}
+.wp-block-create-block-publishpress-frontend-render details summary {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.wp-block-create-block-publishpress-frontend-render details summary::before {
+  content: "+";
+  font-size: 3rem;
+  width: 10%;
+  max-width: 2rem;
+}
+.wp-block-create-block-publishpress-frontend-render details summary > div {
+  width: 90%;
+  align-self: center;
+  cursor: pointer;
+}
+.wp-block-create-block-publishpress-frontend-render details[open] summary::before {
+  content: "-";
+}
+.wp-block-create-block-publishpress-frontend-render .post-tags-cats {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+}
+.wp-block-create-block-publishpress-frontend-render .post-tags-cats > div {
+  display: flex;
+  flex-direction: row;
+}
+.wp-block-create-block-publishpress-frontend-render .post-tags-cats .cat-urgent {
+  border: 1px solid rgb(141, 1, 1);
+  background-color: rgb(110, 6, 6);
+  padding: 0.5rem;
+  color: white;
+  border-radius: 15%;
+}

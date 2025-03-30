@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/publishpress-frontend-render",
+  "version": "0.1.0",
+  "title": "Publishpress Frontend Render",
+  "category": "widgets",
+  "icon": "welcome-add-page",
+  "description": "Example block scaffolded with Create Block tool.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "color": {
+      "background": true
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    },
+    "align": [
+      "full",
+      "center",
+      "left",
+      "wide",
+      "right"
+    ]
+  },
+  "attributes": {
+    "postStatus": {
+      "type": "string",
+      "default": "publish"
+    },
+    "title": {
+      "type": "string",
+      "default": "Archive"
+    },
+    "titleHeading": {
+      "type": "string",
+      "default": "h2"
+    },
+    "borders": {
+      "type": "number",
+      "default": "0"
+    }
+  },
+  "textdomain": "publishpress-frontend-render",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}
