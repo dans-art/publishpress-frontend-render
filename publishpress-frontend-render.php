@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:       Publishpress Frontend Render
  * Description:       Displays posts by post_status
@@ -15,8 +16,8 @@
 
 namespace ppfr;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
 }
 
 /**
@@ -26,28 +27,30 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function create_block_publishpress_frontend_render_block_init() {
-	if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) { // Function introduced in WordPress 6.8.
-		wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
-	} else {
-		if ( function_exists( 'wp_register_block_metadata_collection' ) ) { // Function introduced in WordPress 6.7.
-			wp_register_block_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
-		}
-		$manifest_data = require __DIR__ . '/build/blocks-manifest.php';
-		foreach ( array_keys( $manifest_data ) as $block_type ) {
-			register_block_type( __DIR__ . "/build/{$block_type}" );
-		}
-	}
-	
-	\ppfr\register_custom_post_status();
-	$post_statuses = \ppfr\get_post_statuses();
-	wp_localize_script('create-block-publishpress-frontend-render-editor-script', 'postStatuses', $post_statuses);
+function create_block_publishpress_frontend_render_block_init()
+{
+    if (function_exists('wp_register_block_types_from_metadata_collection')) { // Function introduced in WordPress 6.8.
+        wp_register_block_types_from_metadata_collection(__DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php');
+    } else {
+        if (function_exists('wp_register_block_metadata_collection')) { // Function introduced in WordPress 6.7.
+            wp_register_block_metadata_collection(__DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php');
+        }
+        $manifest_data = require __DIR__ . '/build/blocks-manifest.php';
+        foreach (array_keys($manifest_data) as $block_type) {
+            register_block_type(__DIR__ . "/build/{$block_type}");
+        }
+    }
+
+    \ppfr\register_custom_post_status();
+    $post_statuses = \ppfr\get_post_statuses();
+    wp_localize_script('create-block-publishpress-frontend-render-editor-script', 'postStatuses', $post_statuses);
 }
-add_action( 'init', '\\ppfr\create_block_publishpress_frontend_render_block_init' );
+add_action('init', '\\ppfr\create_block_publishpress_frontend_render_block_init');
 
 
-function register_custom_post_status(){
-	register_post_status('in-progress', array(
+function register_custom_post_status()
+{
+    register_post_status('in-progress', array(
         'label'                     => _x('In Progress', 'post status label'),
         'public'                    => true,
         'exclude_from_search'       => false,
@@ -55,7 +58,7 @@ function register_custom_post_status(){
         'show_in_admin_status_list' => true,
         'label_count'               => _n_noop('My Custom Status <span class="count">(%s)</span>', 'My Custom Status <span class="count">(%s)</span>'),
     ));
-	register_post_status('task-complete', array(
+    register_post_status('task-complete', array(
         'label'                     => _x('Completed Tasks', 'post status label'),
         'public'                    => true,
         'exclude_from_search'       => false,
@@ -64,8 +67,9 @@ function register_custom_post_status(){
         'label_count'               => _n_noop('My Custom Status <span class="count">(%s)</span>', 'My Custom Status <span class="count">(%s)</span>'),
     ));
 }
-function get_post_statuses(){
-	$statuses = get_post_stati([], 'objects');
+function get_post_statuses()
+{
+    $statuses = get_post_stati([], 'objects');
     $status_options = [];
 
     foreach ($statuses as $status) {
@@ -74,5 +78,39 @@ function get_post_statuses(){
             'label' => $status->label,
         ];
     }
-	return $status_options;
+    return $status_options;
 }
+
+add_filter('display_post_states', function ($states) {
+    global $post;
+    $status = get_query_var('post_status');
+
+    if ($status !== 'in-progress' && $post->post_status === 'in-progress') {
+        return array_merge(array('In Progress'), $states);
+    }
+    if ($status !== 'task-complete' && $post->post_status === 'task-complete') {
+        return array_merge(array('Task complete'), $states);
+    }
+
+    return $states;
+});
+
+add_filter('publishpress_calendar_post_statuses', function ($statuses) {
+    $in_progress = new \stdClass();
+    $in_progress->label = 'In Progress';
+    $in_progress->description = 'In Progress';
+    $in_progress->name = 'In Progress';
+    $in_progress->slug = 'in-progress';
+    $in_progress->position = 5;
+    $statuses[] = $in_progress;
+
+    $complete = new \stdClass();
+    $complete->label = 'Task Complete';
+    $complete->description = 'Task complete';
+    $complete->name = 'Complete';
+    $complete->slug = 'task-complete';
+    $complete->position = 6;
+    $statuses[] = $complete;
+
+    return $statuses;
+});
