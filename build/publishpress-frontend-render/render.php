@@ -38,24 +38,28 @@ $extra_wrapper_atts = ['style' => 'border-radius: ' . $border_radius . 'px;'];
 					<?php endif ?>
 					<div class="post-title"><?php echo $post->post_title; ?></div>
 					<div class="post-tags-cats">
-						<div>
-							<?php
-							foreach ($tags as $tag) {
-								echo '<div class="tag tag-' . $tag->slug . '">' . $tag->name . '</div>';
-							}
-							?>
-						</div>
-						<div>
-							<?php
-							foreach ($categories as $cat) {
-								echo '<div class="cat cat-' . $cat->slug . '">' . $cat->name . '</div>';
-							}
-							?>
-						</div>
+						<?php if (!empty($tags)): ?>
+							<div>
+								<?php
+								foreach ($tags as $tag) {
+									echo '<div class="tag tag-' . $tag->slug . '">' . $tag->name . '</div>';
+								}
+								?>
+							</div>
+						<?php endif; ?>
+						<?php if (!empty($categories)): ?>
+							<div>
+								<?php
+								foreach ($categories as $cat) {
+									echo '<div class="cat cat-' . $cat->slug . '">' . $cat->name . '</div>';
+								}
+								?>
+							</div>
+						<?php endif; ?>
 					</div>
 					<?php if ($content): ?>
-					</summary>
-					<?php echo $content; ?>
+				</summary>
+				<?php echo $content; ?>
 			</details>
 		<?php else: ?>
 </div>

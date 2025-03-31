@@ -47,6 +47,11 @@
 			{
 				content: '-';
 			}
+			margin-bottom: 1rem;
+		}
+
+		&[open] > *:not(summary){
+			padding-left: 1rem;
 		}
 	}
 
@@ -58,7 +63,6 @@
 		flex-direction: row;
 		flex-wrap: nowrap;
 		width: 100%;
-		padding-left: 1rem;
 		gap: 1rem;
 
 		div
