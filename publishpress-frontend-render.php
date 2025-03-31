@@ -56,7 +56,7 @@ function register_custom_post_status()
         'exclude_from_search'       => false,
         'show_in_admin_all_list'    => true,
         'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('My Custom Status <span class="count">(%s)</span>', 'My Custom Status <span class="count">(%s)</span>'),
+        'label_count'               => _n_noop('In Progress tasks <span class="count">(%s)</span>', 'In Progress task <span class="count">(%s)</span>'),
     ));
     register_post_status('task-complete', array(
         'label'                     => _x('Completed Tasks', 'post status label'),
@@ -64,7 +64,15 @@ function register_custom_post_status()
         'exclude_from_search'       => false,
         'show_in_admin_all_list'    => true,
         'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('My Custom Status <span class="count">(%s)</span>', 'My Custom Status <span class="count">(%s)</span>'),
+        'label_count'               => _n_noop('Complete tasks <span class="count">(%s)</span>', 'Complete task <span class="count">(%s)</span>'),
+    ));
+    register_post_status('task-new', array(
+        'label'                     => _x('New Tasks', 'post status label'),
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop('New tasks <span class="count">(%s)</span>', 'New task <span class="count">(%s)</span>'),
     ));
 }
 function get_post_statuses()
@@ -89,19 +97,31 @@ add_filter('display_post_states', function ($states) {
         return array_merge(array('In Progress'), $states);
     }
     if ($status !== 'task-complete' && $post->post_status === 'task-complete') {
-        return array_merge(array('Task complete'), $states);
+        return array_merge(array('Task Complete'), $states);
+    }
+    if ($status !== 'task-new' && $post->post_status === 'task-new') {
+        return array_merge(array('Task New'), $states);
     }
 
     return $states;
 });
 
 add_filter('publishpress_calendar_post_statuses', function ($statuses) {
+
+    $new = new \stdClass();
+    $new->label = 'New';
+    $new->description = 'New task that';
+    $new->name = 'New';
+    $new->slug = 'task-new';
+    $new->position = 5;
+    $statuses[] = $new;
+
     $in_progress = new \stdClass();
     $in_progress->label = 'In Progress';
     $in_progress->description = 'In Progress';
     $in_progress->name = 'In Progress';
     $in_progress->slug = 'in-progress';
-    $in_progress->position = 5;
+    $in_progress->position = 6;
     $statuses[] = $in_progress;
 
     $complete = new \stdClass();
@@ -109,8 +129,15 @@ add_filter('publishpress_calendar_post_statuses', function ($statuses) {
     $complete->description = 'Task complete';
     $complete->name = 'Complete';
     $complete->slug = 'task-complete';
-    $complete->position = 6;
+    $complete->position = 7;
     $statuses[] = $complete;
 
+    $remove = ['draft', 'pending', 'publish', 'future'];
+    foreach ($statuses as $key => $status) {
+        if (in_array($status->name, $remove)) {
+            unset($statuses[$key]);
+        }
+    }
+
     return $statuses;
-});
+}, 100);
