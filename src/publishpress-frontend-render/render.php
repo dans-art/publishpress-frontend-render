@@ -24,7 +24,7 @@ $extra_wrapper_atts = ['style' => 'border-radius: ' . $border_radius . 'px;'];
 <div <?php echo get_block_wrapper_attributes($extra_wrapper_atts); ?>>
 	<?php
 	echo "<$heading>$title</$heading>";
-	$posts = get_posts(['post_status' => $post_status, 'post_type' => ['page', 'post']],);
+	$posts = get_posts(['post_status' => $post_status, 'post_type' => ['page', 'post'], 'posts_per_page' => -1],);
 	foreach ($posts as $post) {
 		$tags = get_the_tags($post) ?: [];
 		$categories = get_the_category($post->ID) ?: [];
